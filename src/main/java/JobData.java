@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by LaunchCode
  */
-public class JobData {
+public class JobData<allJobs> {
 
     private static final String DATA_FILE = "src/main/resources/job_data.csv";
     private static boolean isDataLoaded = false;
@@ -43,8 +43,7 @@ public class JobData {
         }
 
         // Bonus mission: sort the results
-        Collections.sort(values);
-
+        //Collections.sort(values);
         return values;
     }
 
@@ -53,8 +52,10 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
+        return allJobs;
+
         // Bonus mission; normal version returns allJobs
-        return new ArrayList<>(allJobs);
+        //return new ArrayList<>(allJobs);
     }
 
     /**
@@ -79,6 +80,9 @@ public class JobData {
 
             String aValue = row.get(column);
 
+            aValue = aValue.toLowerCase();
+            value = value.toLowerCase();
+
             if (aValue.contains(value)) {
                 jobs.add(row);
             }
@@ -95,12 +99,28 @@ public class JobData {
      */
     public static ArrayList<HashMap<String, String>> findByValue(String value) {
 
-        // load data, if not already loaded
         loadData();
 
-        // TODO - implement this method
-        return null;
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+        for (String key : row.keySet()) {
+            String aValue = row.get(key);
+            if(aValue.toLowerCase().contains(value.toLowerCase())) {
+                jobs.add(row);
+                break;
+            }
+        }
+
+
     }
+            return jobs;
+    }
+
+        // load data, if not already loaded
+
+        // TODO - implement this method
+        //return null;
 
     /**
      * Read in data from a CSV file and store it in a list
